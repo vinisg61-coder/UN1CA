@@ -2,9 +2,11 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 # Only the below variable(s) need to be changed!
-VERSION_MAJOR=3
-VERSION_MINOR=1
+# NERV-Remastered based on UN1CA
+VERSION_MAJOR=1
+VERSION_MINOR=0
 VERSION_PATCH=0
+ROM_NAME="NERV-Remastered"
 
 # The below variables will be generated automatically
 #

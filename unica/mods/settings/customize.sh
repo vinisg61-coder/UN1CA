@@ -39,7 +39,7 @@ SMALI_PATCH "system" "system/priv-app/SecSettings/SecSettings.apk" \
     'ro.product.model' \
     'ro.boot.em.model'
 
-LOG_STEP_IN "- Adding UN1CA Settings"
+LOG_STEP_IN "- Adding NERV-Remastered Settings"
 
 # Dynamically patch SecSettings
 # - Add missing/non-xml files in place

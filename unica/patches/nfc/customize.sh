@@ -124,7 +124,9 @@ if [ -f "$WORK_DIR/system/system/lib/libnfc_sec_jni.so" ]; then
     fi
 elif [ -f "$FW_DIR/$TARGET_FIRMWARE_PATH/system/system/lib/libnfc_sec_jni.so" ] || \
         [ -f "$FW_DIR/$TARGET_FIRMWARE_PATH/system/system/lib64/libnfc_sec_jni.so" ]; then
-    ADD_TO_WORK_DIR "$TARGET_FIRMWARE" "system" "system/lib/libnfc_sec_jni.so" 0 0 644 "u:object_r:system_lib_file:s0"
+    # TEMPORARILY DISABLED - lib not available in prebuilts
+    # ADD_TO_WORK_DIR "$TARGET_FIRMWARE" "system" "system/lib/libnfc_sec_jni.so" 0 0 644 "u:object_r:system_lib_file:s0"
+    :
 fi
 if [ -f "$WORK_DIR/system/system/lib64/libnfc_sec_jni.so" ]; then
     if [ ! -f "$FW_DIR/$TARGET_FIRMWARE_PATH/system/system/lib64/libnfc_sec_jni.so" ] && \
@@ -132,7 +134,9 @@ if [ -f "$WORK_DIR/system/system/lib64/libnfc_sec_jni.so" ]; then
         DELETE_FROM_WORK_DIR "system" "system/lib64/libnfc_sec_jni.so"
     fi
 elif [ -f "$FW_DIR/$TARGET_FIRMWARE_PATH/system/system/lib64/libnfc_sec_jni.so" ]; then
-    ADD_TO_WORK_DIR "$TARGET_FIRMWARE" "system" "system/lib64/libnfc_sec_jni.so" 0 0 644 "u:object_r:system_lib_file:s0"
+    # TEMPORARILY DISABLED - lib not available in prebuilts
+    # ADD_TO_WORK_DIR "$TARGET_FIRMWARE" "system" "system/lib64/libnfc_sec_jni.so" 0 0 644 "u:object_r:system_lib_file:s0"
+    :
 fi
 
 unset TARGET_FIRMWARE_PATH

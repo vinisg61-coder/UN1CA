@@ -66,4 +66,11 @@ jobs:
       - name: Build ROM
         run: |
           source ./buildenv.sh ${{ matrix.target }}
-          ./scripts/make_rom.sh
+          ./scripts/make_rom.sh -z
+
+      - name: Upload ROM zip
+        uses: actions/upload-artifact@v4
+        with:
+          name: NERV-${{ matrix.target }}-rom
+          path: out/*.zip
+          retention-days: 7

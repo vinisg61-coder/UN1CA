@@ -71,7 +71,7 @@ jobs:
       - name: Find flashable zip
         id: find_zip
         run: |
-          ZIP_FILE=$(find out -name "*flashable*.zip" -o -name "a52sxq*NERV*.zip" | head -1)
+          ZIP_FILE=$(find out -name "NERV-Remastered*.zip" ! -name "*target_files*" | head -1)
           echo "zip_file=$ZIP_FILE" >> $GITHUB_OUTPUT
           echo "Found: $ZIP_FILE"
 

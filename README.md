@@ -9,7 +9,7 @@
 </p>
 
 <p align="center">
-  <b>ProjectNERV</b> - Clean. Light. Yours.
+  <b>ultrarom</b> - Clean. Light. Yours.
 </p>
 
 <p align="center">
@@ -20,9 +20,9 @@
 
 ---
 
-# What is ProjectNERV?
+# What is ultrarom?
 
-**ProjectNERV** is a customized version of [UN1CA](https://github.com/salvogiangri/UN1CA) for the **Samsung Galaxy A52s 5G (SM-A528B/N)**, focused on:
+**ultrarom** is a customized version of [UN1CA](https://github.com/salvogiangri/UN1CA) for the **Samsung Galaxy A52s 5G (SM-A528B/N)**, focused on:
 
 - 💀 **Nuclear Knox Removal** - Complete Knox removal from system
 - 🤖 **Galaxy AI Removed** - No bloat AI features
@@ -84,7 +84,7 @@
 
 # Downloads
 
-**Latest Build:** [GitHub Actions](https://github.com/vinisg61-coder/NERV-Remastered/actions/workflows/build.yml) → Artifacts → `ProjectNERV-a52sxq-rom.zip`
+**Latest Build:** [GitHub Actions](https://github.com/vinisg61-coder/NERV-Remastered/actions/workflows/build.yml) → Artifacts → `ultrarom-a52sxq-rom.zip`
 
 ---
 
@@ -93,7 +93,7 @@
 1. Boot to TWRP recovery
 2. Format Data (if coming from different ROM)
 3. `adb shell twrp decrypt "default_password"` (no PIN/Pattern)
-4. Flash `ProjectNERV-*.zip`
+4. Flash `ultrarom-*.zip`
 5. Wipe Dalvik/ART Cache
 6. Reboot
 

@@ -2,11 +2,11 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 # Only the below variable(s) need to be changed!
-# ProjectNERV based on UN1CA
+# ultrarom based on UN1CA
 VERSION_MAJOR=1
 VERSION_MINOR=0
 VERSION_PATCH=0
-ROM_NAME="ProjectNERV"
+ROM_NAME="ultrarom"
 
 # The below variables will be generated automatically
 #

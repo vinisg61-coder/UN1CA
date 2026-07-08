@@ -71,13 +71,13 @@ jobs:
       - name: Find flashable zip
         id: find_zip
         run: |
-          ZIP_FILE=$(find out -name "ProjectNERV*.zip" ! -name "*target_files*" | head -1)
+          ZIP_FILE=$(find out -name "ultrarom*.zip" ! -name "*target_files*" | head -1)
           echo "zip_file=$ZIP_FILE" >> $GITHUB_OUTPUT
           echo "Found: $ZIP_FILE"
 
       - name: Upload ROM zip
         uses: actions/upload-artifact@v4
         with:
-          name: ProjectNERV-${{ matrix.target }}-rom
+          name: ultrarom-${{ matrix.target }}-rom
           path: ${{ steps.find_zip.outputs.zip_file }}
           retention-days: 7

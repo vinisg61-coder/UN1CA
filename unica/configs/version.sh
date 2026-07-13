@@ -6,7 +6,7 @@
 VERSION_MAJOR=1
 VERSION_MINOR=0
 VERSION_PATCH=0
-ROM_NAME="ultrarom"
+ROM_NAME="crappyui"
 
 # The below variables will be generated automatically
 #

@@ -78,7 +78,7 @@ jobs:
       - name: Upload ROM zip
         uses: actions/upload-artifact@v4
         with:
-          name: ultrarom-${{ matrix.target }}-rom
+          name: crappyui-${{ matrix.target }}-rom
           path: ${{ steps.find_zip.outputs.zip_file }}
           retention-days: 7
           

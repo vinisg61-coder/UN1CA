@@ -41,20 +41,6 @@ Removed:
 - Facebook services, Samsung Kids, AR Emoji, Samsung Pass
 - All Knox permissions and configurations
 
-## Status
-
-| Feature | Status |
-|---------|--------|
-| Boot | Working |
-| WiFi | Working |
-| Bluetooth | Working |
-| Calls/SMS | Working |
-| NFC | Working |
-| Camera | Working |
-| Decrypt | Working |
-| Knox removal | Confirmed |
-| Debloat | Confirmed |
-
 ## Downloads
 
 Latest build: [GitHub Actions](https://github.com/vinisg61-coder/UN1CA/actions/workflows/build.yml) -> Artifacts -> `un1ca-a52sxq-rom.zip`

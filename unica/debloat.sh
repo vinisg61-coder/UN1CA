@@ -150,6 +150,11 @@ system/etc/permissions/signature-permissions-com.sec.android.app.kidshome.xml
 system/app/KidsHome_Installer
 "
 
+# Samsung Notes
+SYSTEM_DEBLOAT+="
+system/app/Notes40
+"
+
 # Bixby
 SYSTEM_DEBLOAT+="
 system/priv-app/Bixby
@@ -166,6 +171,23 @@ system/etc/permissions/signature-permissions-com.samsung.android.bixby.agent.xml
 # AVISO: algumas features do Gboard podem ser afetadas
 SYSTEM_DEBLOAT+="
 system/priv-app/AICore
+"
+
+# S-Pen (no S-Pen on a52sxq)
+SYSTEM_DEBLOAT+="
+system/app/AirGlance
+system/app/LiveDrawing
+system/etc/default-permissions/default-permissions-com.samsung.android.service.aircommand.xml
+system/etc/permissions/privapp-permissions-com.samsung.android.app.readingglass.xml
+system/etc/permissions/privapp-permissions-com.samsung.android.service.aircommand.xml
+system/etc/permissions/privapp-permissions-com.samsung.android.service.airviewdictionary.xml
+system/etc/public.libraries-smps.samsung.txt
+system/etc/sysconfig/airviewdictionaryservice.xml
+system/lib64/libsmpsft.smps.samsung.so
+system/media/audio/pensounds
+system/priv-app/AirCommand
+system/priv-app/AirReadingGlass
+system/priv-app/SmartEye
 "
 
 # LED Cover Service

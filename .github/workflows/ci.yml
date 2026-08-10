@@ -132,4 +132,63 @@ jobs:
         run: ./scripts/extract_fw.sh
 
       - name: Build ROM
-        run: ./scripts/make_rom.sh
+        run: ./scripts/make_rom.sh -z
+
+      - name: Find flashable zip
+        id: find_zip
+        run: |
+          ZIP_FILE=$(find out -name "un1ca*.zip" ! -name "*target_files*" | head -1)
+          echo "zip_file=$ZIP_FILE" >> $GITHUB_OUTPUT
+          echo "Found: $ZIP_FILE"
+
+      - name: Upload ROM zip
+        uses: actions/upload-artifact@v4
+        with:
+          name: un1ca-${{ matrix.target }}-rom
+          path: ${{ steps.find_zip.outputs.zip_file }}
+          retention-days: 7
+
+      - name: Upload ROM to GoFile
+        id: gofile_upload
+        continue-on-error: true
+        run: |
+          ZIP_FILE="${{ steps.find_zip.outputs.zip_file }}"
+          if [ -z "$ZIP_FILE" ] || [ ! -f "$ZIP_FILE" ]; then
+            echo "Nie znaleziono pliku zip do uploadu: $ZIP_FILE"
+            exit 1
+          fi
+
+          echo "Pobieranie najlepszego serwera GoFile..."
+          SERVER=$(curl -s https://api.gofile.io/servers | jq -r '.data.servers[0].name')
+          if [ -z "$SERVER" ] || [ "$SERVER" = "null" ]; then
+            echo "Nie udalo sie pobrac serwera GoFile"
+            exit 1
+          fi
+          echo "Wybrany serwer: $SERVER"
+
+          echo "Uploading $ZIP_FILE do GoFile..."
+          RESPONSE=$(curl -s -X POST "https://${SERVER}.gofile.io/uploadFile" \
+            -F "file=@${ZIP_FILE}")
+
+          echo "Odpowiedz GoFile: $RESPONSE"
+
+          STATUS=$(echo "$RESPONSE" | jq -r '.status')
+          if [ "$STATUS" != "ok" ]; then
+            echo "Upload nieudany, status: $STATUS"
+            exit 1
+          fi
+
+          DOWNLOAD_PAGE=$(echo "$RESPONSE" | jq -r '.data.downloadPage')
+          echo "Link do pobrania: $DOWNLOAD_PAGE"
+          echo "download_url=$DOWNLOAD_PAGE" >> $GITHUB_OUTPUT
+
+      - name: Podsumowanie uploadu
+        if: always()
+        run: |
+          echo "### ROM Upload" >> $GITHUB_STEP_SUMMARY
+          echo "**Target:** ${{ matrix.target }}" >> $GITHUB_STEP_SUMMARY
+          if [ -n "${{ steps.gofile_upload.outputs.download_url }}" ]; then
+            echo "**Link GoFile:** ${{ steps.gofile_upload.outputs.download_url }}" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "**GoFile:** upload failed or skipped (artifact still available below)" >> $GITHUB_STEP_SUMMARY
+          fi

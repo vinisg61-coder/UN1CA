@@ -2,11 +2,10 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 # Only the below variable(s) need to be changed!
-# ultrarom based on UN1CA
 VERSION_MAJOR=1
 VERSION_MINOR=0
 VERSION_PATCH=0
-ROM_NAME="crappyui"
+ROM_NAME="un1ca"
 
 # The below variables will be generated automatically
 #

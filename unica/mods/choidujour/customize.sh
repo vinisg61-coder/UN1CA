@@ -1,3 +1,4 @@
+# shellcheck disable=SC2034
 SKIPUNZIP=1
 
 if ! $ROM_IS_OFFICIAL; then
@@ -22,6 +23,9 @@ EVAL "rm \"$WORK_DIR/system/system/etc/security/otacerts.zip\""
 EVAL "cd \"$SRC_DIR\"; zip -q \"$WORK_DIR/system/system/etc/security/otacerts.zip\" \"./security/unica_ota.x509.pem\""
 
 DECODE_APK "system" "system/priv-app/SecSettings/SecSettings.apk"
+
+APPLY_PATCH "system" "system/priv-app/SecSettings/SecSettings.apk" \
+    "$MODPATH/suggestions/SecSettings.apk/0001-Launch-UN1CA-Updates-from-suggestions.patch"
 
 # Disable stock OTA references
 SMALI_PATCH "system" "system/priv-app/SecSettings/SecSettings.apk" \

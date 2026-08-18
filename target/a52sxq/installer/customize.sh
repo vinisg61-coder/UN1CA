@@ -1,3 +1,10 @@
+#!/usr/bin/env bash
+
+if [[ "${TARGET_BONE_KERNEL_ENABLED:-false}" == "true" ]]; then
+    LOG "Bone-machine kernel enabled; keeping integrated dtbo.img"
+    return 0
+fi
+
 LOG "- Downloading A528NKSS7GYI1_kernel.tar"
 DOWNLOAD_FILE \
     "https://github.com/UN1CA/proprietary_vendor_samsung_sm7325/releases/download/A528NKSS7GYI1_KOO_OKR/A528NKSS7GYI1_kernel.tar" \

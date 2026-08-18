@@ -83,3 +83,17 @@ Latest build: [GitHub Actions](https://github.com/vinisg61-coder/UN1CA/actions/w
 ## License
 
 Licensed under the [GNU General Public License v3.0](LICENSE). Based on [UN1CA](https://github.com/salvogiangri/UN1CA) by Salvo Giangreco.
+
+## Optional bone-machine SUSFS kernel via GitHub Actions
+
+The A52s target includes an opt-in integration for [bone-machine's SM7325 kernel](https://github.com/bone-machine/android_kernel_samsung_sm7325_a52s_5g), using the `ksu-next-susfs-oneui` branch and KernelSU-Next/SUSFS. **No local kernel checkout or local build is required.** Open the `Build` workflow, choose `Run workflow`, select the desired `kernel_mode`, and download the generated ROM from the workflow artifacts.
+
+The available modes are:
+
+| Workflow option | Result |
+|---|---|
+| `stock` | Builds the UN1CA ROM with the stock A52s kernel. |
+| `bone-release` | Downloads the public bone-machine SUSFS One UI ZIP and embeds `boot.img`, `vendor_boot.img` and `dtbo.img` into the UN1CA ROM. |
+| `bone-source` | Checks out the `ksu-next-susfs-oneui` kernel source inside the GitHub runner, builds it there using the current UN1CA boot images, and embeds the resulting images. |
+
+The experimental Artisan HFR tweak is a separate workflow checkbox and remains disabled by default. The bone-machine kernel is hardware-specific to the Snapdragon 778G/SM7325 A52s; do not use this workflow output on another device target. Always keep a recovery path and a backup of the stock boot/vendor boot images before flashing.

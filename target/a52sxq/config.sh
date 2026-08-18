@@ -46,3 +46,16 @@ TARGET_LCD_SUPPORT_MDNIE_HW=false
 TARGET_RIL_FEATURES="onebinary"
 TARGET_RIL_SIM_CONFIG_MULTISIM_TRAYCOUNT="1"
 TARGET_RIL_SUPPORT_WATERPROOF_SIM_TRAY_MSG=true
+
+# Optional SM7325 bone-machine KernelSU-Next/SUSFS integration.
+# Keep disabled for stock-kernel builds; enable explicitly in the build environment.
+TARGET_BONE_KERNEL_ENABLED="${TARGET_BONE_KERNEL_ENABLED:-false}"
+TARGET_BONE_KERNEL_MODE="${TARGET_BONE_KERNEL_MODE:-release}"
+TARGET_BONE_KERNEL_SOURCE_DIR="${TARGET_BONE_KERNEL_SOURCE_DIR:-none}"
+TARGET_BONE_KERNEL_BRANCH="${TARGET_BONE_KERNEL_BRANCH:-ksu-next-susfs-oneui}"
+TARGET_BONE_KERNEL_REPO="${TARGET_BONE_KERNEL_REPO:-bone-machine/android_kernel_samsung_sm7325_a52s_5g}"
+TARGET_BONE_KERNEL_RELEASE_URL="${TARGET_BONE_KERNEL_RELEASE_URL:-https://github.com/bone-machine/android_kernel_samsung_sm7325_a52s_5g/releases/download/v3.2.0-legacy/bone-machine_One-UI_KSU-Next-v3.2.0-legacy_SUSFS_a52sxq.zip}"
+
+# Optional A52s-rebased Artisan HFR tweak; disabled by default because it can
+# change 60/120 Hz transitions and battery behavior.
+TARGET_ARTISAN_HFR_TWEAKS_ENABLED="${TARGET_ARTISAN_HFR_TWEAKS_ENABLED:-false}"

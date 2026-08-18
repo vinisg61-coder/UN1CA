@@ -1,13 +1,36 @@
 name: Build
+
 on:
   workflow_dispatch:
+    inputs:
+      kernel_mode:
+        description: "Kernel embutido no ZIP da ROM"
+        required: true
+        type: choice
+        default: bone-release
+        options:
+          - stock
+          - bone-release
+          - bone-source
+      artisan_hfr_tweaks:
+        description: "Ativar o tweak HFR rebaseado da Artisan (experimental)"
+        required: true
+        type: boolean
+        default: false
   pull_request:
   push:
     branches:
       - 'sixteen'
+
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
+
+env:
+  BONE_KERNEL_BRANCH: ksu-next-susfs-oneui
+  BONE_KERNEL_REPO: bone-machine/android_kernel_samsung_sm7325_a52s_5g
+  BONE_KERNEL_RELEASE_URL: https://github.com/bone-machine/android_kernel_samsung_sm7325_a52s_5g/releases/download/v3.2.0-legacy/bone-machine_One-UI_KSU-Next-v3.2.0-legacy_SUSFS_a52sxq.zip
+
 jobs:
   build:
     runs-on: ubuntu-24.04
@@ -16,107 +39,183 @@ jobs:
       matrix:
         target: [a52sxq]
     steps:
-      - name: Checkout repo
-        uses: actions/checkout@v7
+      - name: Checkout UN1CA
+        uses: actions/checkout@v4
         with:
-          submodules: 'recursive'
+          submodules: recursive
+
+      - name: Checkout bone-machine source (source mode only)
+        if: ${{ inputs.kernel_mode == 'bone-source' }}
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ env.BONE_KERNEL_REPO }}
+          ref: ${{ env.BONE_KERNEL_BRANCH }}
+          path: bone-kernel
+          submodules: recursive
+          fetch-depth: 1
+
       - name: Free disk space (1/3)
         run: |
           sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc /opt/hostedtoolcache/CodeQL
           sudo docker image prune --all --force
           sudo docker builder prune -a
+
       - name: Free disk space (2/3)
         uses: jlumbroso/free-disk-space@main
         with:
           tool-cache: true
+
       - name: Free disk space (3/3)
         uses: rokibhasansagar/slimhub_actions@main
         with:
           retain: 'compiler_cmake'
+
+      - name: Configure kernel mode
+        shell: bash
+        env:
+          REQUESTED_KERNEL_MODE: ${{ inputs.kernel_mode }}
+          REQUESTED_HFR_TWEAKS: ${{ inputs.artisan_hfr_tweaks }}
+        run: |
+          set -euo pipefail
+          KERNEL_MODE="${REQUESTED_KERNEL_MODE:-stock}"
+          HFR_TWEAKS="${REQUESTED_HFR_TWEAKS:-false}"
+
+          case "$KERNEL_MODE" in
+            stock)
+              {
+                echo "TARGET_BONE_KERNEL_ENABLED=false"
+                echo "TARGET_BONE_KERNEL_MODE=release"
+                echo "TARGET_BONE_KERNEL_SOURCE_DIR=none"
+              } >> "$GITHUB_ENV"
+              ;;
+            bone-release)
+              {
+                echo "TARGET_BONE_KERNEL_ENABLED=true"
+                echo "TARGET_BONE_KERNEL_MODE=release"
+                echo "TARGET_BONE_KERNEL_SOURCE_DIR=none"
+                echo "TARGET_BONE_KERNEL_BRANCH=$BONE_KERNEL_BRANCH"
+                echo "TARGET_BONE_KERNEL_REPO=$BONE_KERNEL_REPO"
+                echo "TARGET_BONE_KERNEL_RELEASE_URL=$BONE_KERNEL_RELEASE_URL"
+              } >> "$GITHUB_ENV"
+              ;;
+            bone-source)
+              {
+                echo "TARGET_BONE_KERNEL_ENABLED=true"
+                echo "TARGET_BONE_KERNEL_MODE=source"
+                echo "TARGET_BONE_KERNEL_SOURCE_DIR=$GITHUB_WORKSPACE/bone-kernel"
+                echo "TARGET_BONE_KERNEL_BRANCH=$BONE_KERNEL_BRANCH"
+                echo "TARGET_BONE_KERNEL_REPO=$BONE_KERNEL_REPO"
+              } >> "$GITHUB_ENV"
+              ;;
+            *)
+              echo "Unsupported kernel mode: $KERNEL_MODE" >&2
+              exit 1
+              ;;
+          esac
+
+          echo "TARGET_ARTISAN_HFR_TWEAKS_ENABLED=$HFR_TWEAKS" >> "$GITHUB_ENV"
+          echo "Selected kernel mode: $KERNEL_MODE"
+          echo "Artisan HFR tweaks: $HFR_TWEAKS"
+
       - name: Set up build environment
         run: |
+          set -euo pipefail
           sudo apt update
           DEBIAN_FRONTEND=noninteractive sudo apt install -yq \
-            7zip attr ccache clang ffmpeg \
-            libbrotli-dev libbz2-dev libgtest-dev libprotobuf-dev libunwind-dev libpcre2-dev \
-            libzstd-dev linux-modules-extra-$(uname -r) lld protobuf-compiler webp
+            7zip attr bc bison brotli build-essential ccache clang cmake cpio \
+            ffmpeg flex gcc-aarch64-linux-gnu git kmod lld lz4 \
+            libbrotli-dev libbz2-dev libgtest-dev libprotobuf-dev libunwind-dev \
+            libpcre2-dev libssl-dev libzstd-dev linux-modules-extra-$(uname -r) \
+            protobuf-compiler jq rsync unzip webp xxd zip zstd
           sudo modprobe erofs f2fs
           git config --global user.name "github-actions[bot]"
           git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
           echo -n "${{ secrets.PLATFORM_KEY_PK8 }}" | base64 --decode > security/unica_platform.pk8
           echo -n "${{ secrets.PLATFORM_KEY_PEM }}" | base64 --decode > security/unica_platform.x509.pem
+
       - name: Set up JDK 17
-        uses: actions/setup-java@v5
+        uses: actions/setup-java@v4
         with:
-          distribution: 'temurin'
+          distribution: temurin
           java-version: '17'
-          cache: 'gradle'
+          cache: gradle
+
       - name: Build dependencies
         run: |
-          source ./buildenv.sh ${{ matrix.target }}
+          set -euo pipefail
+          source ./buildenv.sh "${{ matrix.target }}"
           ./scripts/build_dependencies.sh
+
       - name: Download stock firmwares
         run: |
-          source ./buildenv.sh ${{ matrix.target }}
+          set -euo pipefail
+          source ./buildenv.sh "${{ matrix.target }}"
           ./scripts/download_fw.sh
+
       - name: Extract stock firmwares
         run: |
-          source ./buildenv.sh ${{ matrix.target }}
+          set -euo pipefail
+          source ./buildenv.sh "${{ matrix.target }}"
           ./scripts/extract_fw.sh
-      - name: Build ROM
-        run: |
-          source ./buildenv.sh ${{ matrix.target }}
-          ./scripts/make_rom.sh -z
 
-      - name: Find flashable zip
-        id: find_zip
+      - name: Build ROM with selected kernel
         run: |
-          ZIP_FILE=$(find out -name "un1ca*.zip" ! -name "*target_files*" | head -1)
-          echo "zip_file=$ZIP_FILE" >> $GITHUB_OUTPUT
-          echo "Found: $ZIP_FILE"
+          set -euo pipefail
+          source ./buildenv.sh "${{ matrix.target }}"
+          ./scripts/make_rom.sh -z -f
+
+      - name: Find flashable artifacts
+        id: find_zip
+        shell: bash
+        run: |
+          set -euo pipefail
+          ROM_ZIP="$(find out -type f -name 'un1ca*.zip' ! -name '*target_files*' | head -1)"
+          TARGET_ZIP="$(find out -type f -name '*-target_files.zip' | head -1)"
+          test -n "$ROM_ZIP" && test -f "$ROM_ZIP"
+          echo "rom_zip=$ROM_ZIP" >> "$GITHUB_OUTPUT"
+          echo "target_zip=$TARGET_ZIP" >> "$GITHUB_OUTPUT"
+          echo "Found ROM: $ROM_ZIP"
+          echo "Found target files: ${TARGET_ZIP:-none}"
 
       - name: Upload ROM zip
         uses: actions/upload-artifact@v4
         with:
-          name: un1ca-${{ matrix.target }}-rom
-          path: ${{ steps.find_zip.outputs.zip_file }}
+          name: un1ca-${{ matrix.target }}-${{ inputs.kernel_mode || 'stock' }}-rom
+          path: ${{ steps.find_zip.outputs.rom_zip }}
+          if-no-files-found: error
           retention-days: 7
-          
+
+      - name: Upload target-files zip
+        uses: actions/upload-artifact@v4
+        if: ${{ steps.find_zip.outputs.target_zip != '' }}
+        with:
+          name: un1ca-${{ matrix.target }}-${{ inputs.kernel_mode || 'stock' }}-target-files
+          path: ${{ steps.find_zip.outputs.target_zip }}
+          if-no-files-found: error
+          retention-days: 3
+
       - name: Upload ROM to GoFile
         id: gofile_upload
+        shell: bash
         run: |
-          ZIP_FILE="${{ steps.find_zip.outputs.zip_file }}"
-          if [ -z "$ZIP_FILE" ] || [ ! -f "$ZIP_FILE" ]; then
-            echo "Nie znaleziono pliku zip do uploadu: $ZIP_FILE"
-            exit 1
-          fi
+          set -euo pipefail
+          ZIP_FILE="${{ steps.find_zip.outputs.rom_zip }}"
+          SERVER="$(curl -fsS https://api.gofile.io/servers | jq -r '.data.servers[0].name')"
+          test -n "$SERVER" && test "$SERVER" != "null"
+          RESPONSE="$(curl -fsS -X POST "https://${SERVER}.gofile.io/uploadFile" -F "file=@${ZIP_FILE}")"
+          STATUS="$(echo "$RESPONSE" | jq -r '.status')"
+          test "$STATUS" = ok
+          DOWNLOAD_PAGE="$(echo "$RESPONSE" | jq -r '.data.downloadPage')"
+          echo "download_url=$DOWNLOAD_PAGE" >> "$GITHUB_OUTPUT"
+          echo "GoFile: $DOWNLOAD_PAGE"
 
-          echo "Pobieranie najlepszego serwera GoFile..."
-          SERVER=$(curl -s https://api.gofile.io/servers | jq -r '.data.servers[0].name')
-          if [ -z "$SERVER" ] || [ "$SERVER" = "null" ]; then
-            echo "Nie udało się pobrać serwera GoFile"
-            exit 1
-          fi
-          echo "Wybrany serwer: $SERVER"
-
-          echo "Uploading $ZIP_FILE do GoFile..."
-          RESPONSE=$(curl -s -X POST "https://${SERVER}.gofile.io/uploadFile" \
-            -F "file=@${ZIP_FILE}")
-
-          echo "Odpowiedź GoFile: $RESPONSE"
-
-          STATUS=$(echo "$RESPONSE" | jq -r '.status')
-          if [ "$STATUS" != "ok" ]; then
-            echo "Upload nieudany, status: $STATUS"
-            exit 1
-          fi
-
-          DOWNLOAD_PAGE=$(echo "$RESPONSE" | jq -r '.data.downloadPage')
-          echo "Link do pobrania: $DOWNLOAD_PAGE"
-          echo "download_url=$DOWNLOAD_PAGE" >> $GITHUB_OUTPUT
-
-      - name: Podsumowanie uploadu
+      - name: Build summary
+        shell: bash
         run: |
-          echo "### 📦 ROM Upload" >> $GITHUB_STEP_SUMMARY
-          echo "**Target:** ${{ matrix.target }}" >> $GITHUB_STEP_SUMMARY
-          echo "**Link GoFile:** ${{ steps.gofile_upload.outputs.download_url }}" >> $GITHUB_STEP_SUMMARY
+          {
+            echo "## UN1CA A52s build"
+            echo "- Kernel mode: ${{ inputs.kernel_mode || 'stock' }}"
+            echo "- Artisan HFR tweaks: ${{ inputs.artisan_hfr_tweaks || 'false' }}"
+            echo "- ROM artifact: ${{ steps.find_zip.outputs.rom_zip }}"
+            echo "- GoFile: ${{ steps.gofile_upload.outputs.download_url }}"
+          } >> "$GITHUB_STEP_SUMMARY"

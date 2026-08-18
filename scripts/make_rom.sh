@@ -17,7 +17,7 @@ TARGET_FIRMWARE_PATH="$(cut -d "/" -f 1 -s <<< "$TARGET_FIRMWARE")_$(cut -d "/" 
 
 GET_WORK_DIR_HASH()
 {
-    find "$SRC_DIR/unica" "$SRC_DIR/target/$TARGET_CODENAME" -type f -print0 | \
+    find "$SRC_DIR/unica" "$SRC_DIR/target/$TARGET_CODENAME" "$SRC_DIR/scripts/integrate_bone_kernel.sh" -type f -print0 | \
         sort -z | xargs -0 sha1sum | sha1sum | cut -d " " -f 1
 }
 
@@ -73,6 +73,12 @@ PRINT_USAGE()
 
 PREPARE_SCRIPT "$@"
 
+if [[ "${TARGET_BONE_KERNEL_ENABLED:-false}" == "true" ]]; then
+    # Kernel images are build artifacts and must be refreshed even when the
+    # OS/framework workdir hash itself has not changed.
+    FORCE=true
+fi
+
 if $FORCE; then
     BUILD_ROM=true
 else
@@ -121,6 +127,12 @@ if $BUILD_ROM; then
         "$SRC_DIR/scripts/internal/apply_modules.sh" "$SRC_DIR/target/$TARGET_CODENAME/patches" || exit 1
         LOG_STEP_OUT
     fi
+    if [[ "${TARGET_ARTISAN_HFR_TWEAKS_ENABLED:-false}" == "true" ]] && [ -d "$SRC_DIR/target/$TARGET_CODENAME/optional_patches/artisan_hfr" ]; then
+        LOG_STEP_IN true "Applying optional Artisan HFR tweaks"
+        "$SRC_DIR/scripts/internal/apply_modules.sh" "$SRC_DIR/target/$TARGET_CODENAME/optional_patches" || exit 1
+        LOG_STEP_OUT
+    fi
+
     if [ -d "$SRC_DIR/unica/patches" ]; then
         LOG_STEP_IN true "Applying ROM patches"
         "$SRC_DIR/scripts/internal/apply_modules.sh" "$SRC_DIR/unica/patches" || exit 1
@@ -148,7 +160,12 @@ if $BUILD_ROM; then
 
         # shellcheck disable=SC2046
         wait $(jobs -p) || exit 1
+        LOG_STEP_OUT
+    fi
 
+    if [[ "${TARGET_BONE_KERNEL_ENABLED:-false}" == "true" ]]; then
+        LOG_STEP_IN true "Integrating bone-machine KernelSU-Next/SUSFS kernel"
+        "$SRC_DIR/scripts/integrate_bone_kernel.sh" || exit 1
         LOG_STEP_OUT
     fi
 

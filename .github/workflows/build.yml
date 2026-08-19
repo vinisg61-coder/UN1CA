@@ -81,7 +81,7 @@ jobs:
           name: un1ca-${{ matrix.target }}-rom
           path: ${{ steps.find_zip.outputs.zip_file }}
           retention-days: 7
-
+          
       - name: Upload ROM to GoFile
         id: gofile_upload
         run: |

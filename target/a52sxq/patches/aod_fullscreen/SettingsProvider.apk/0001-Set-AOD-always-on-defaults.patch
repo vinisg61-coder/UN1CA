@@ -1,0 +1,28 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: UN1CA <unica@example.invalid>
+Date: Tue, 19 Aug 2026 00:00:00 -0300
+Subject: [PATCH] a52sxq: default AOD to fullscreen and always on
+
+The native fullscreen capability is supplied through the target floating
+feature configuration. These per-user system settings make AOD enabled and
+continuously shown when SettingsProvider initializes a new user database.
+
+---
+ smali/com/android/providers/settings/DatabaseHelper$1.smali | 8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+diff --git a/smali/com/android/providers/settings/DatabaseHelper$1.smali b/smali/com/android/providers/settings/DatabaseHelper$1.smali
+index 0000000..1111111 100644
+--- a/smali/com/android/providers/settings/DatabaseHelper$1.smali
++++ b/smali/com/android/providers/settings/DatabaseHelper$1.smali
+@@ -437,6 +437,14 @@
+     invoke-static {v0, v2, v8, v1}, Landroid/provider/Settings$System;->putIntForUser(Landroid/content/ContentResolver;Ljava/lang/String;II)Z
++    const/4 v2, 0x1
++    const-string v3, "aod_mode"
++    invoke-static {v0, v3, v2, v1}, Landroid/provider/Settings$System;->putIntForUser(Landroid/content/ContentResolver;Ljava/lang/String;II)Z
++    const-string v3, "aod_show_state"
++    invoke-static {v0, v3, v2, v1}, Landroid/provider/Settings$System;->putIntForUser(Landroid/content/ContentResolver;Ljava/lang/String;II)Z
+
+     iget-object p0, p0, Lcom/android/providers/settings/DatabaseHelper$1;->this$0:Lcom/android/providers/settings/DatabaseHelper;
+--
+2.51.0

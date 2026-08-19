@@ -86,6 +86,6 @@ Licensed under the [GNU General Public License v3.0](LICENSE). Based on [UN1CA](
 
 ## AOD fullscreen sempre ativo
 
-O alvo `a52sxq` habilita a capacidade nativa de **Full Screen AOD** por meio de `SEC_FLOATING_FEATURE_LCD_CONFIG_AOD_FULLSCREEN=1`. A build também define `aod_mode=1` e `aod_show_state=1` nos defaults do `SettingsProvider`, deixando o AOD ligado e em exibição contínua quando o banco de configurações do usuário é criado. O comportamento continua editável em **Configurações > Tela de bloqueio e AOD > Always On Display** após a instalação.
+O alvo `a52sxq` habilita a capacidade nativa de **Full Screen AOD** por meio de `SEC_FLOATING_FEATURE_LCD_CONFIG_AOD_FULLSCREEN=1`. O fallback global da UN1CA também foi corrigido de `0` para `1`, evitando que a configuração do alvo seja sobrescrita durante a build. A opção aparece no sistema compatível e continua editável em **Configurações > Tela de bloqueio e AOD > Always On Display** após a instalação.
 
-A função é aplicada diretamente pelo workflow normal do GitHub Actions e não requer root, módulo Magisk/KernelSU ou configuração manual posterior. Em instalações que preservam o banco de configurações antigo, os valores já existentes podem permanecer; para garantir o default da ROM, use uma instalação limpa.
+A função é aplicada diretamente pelo workflow normal do GitHub Actions e não requer root, módulo Magisk/KernelSU ou configuração manual posterior. O modo **Always** precisa ser selecionado nas configurações do AOD caso o firmware preserve uma preferência anterior; a build não força valores por usuário via patch Smali, pois a classe SettingsProvider do firmware A52s não corresponde ao contexto usado pelo patch experimental.

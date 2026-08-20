@@ -10,82 +10,35 @@
 
 ---
 
-# un1ca
+# UN1CA for Galaxy A52s 5G
 
-Custom firmware based on [UN1CA](https://github.com/salvogiangri/UN1CA) for the Samsung Galaxy A52s 5G (SM-A528B/N). Focused on a clean, light and debloated One UI 8 (Android 16) experience with Knox removed and Galaxy AI stripped out.
-
-## Device
-
-| | |
-|---|---|
-| Device | Samsung Galaxy A52s 5G |
-| Model | SM-A528B/N |
-| Platform | Snapdragon 778G (SM7325) |
-| Base | UN1CA Android 16 / One UI 8 |
+Custom firmware based on [UN1CA](https://github.com/salvogiangreco/UN1CA) for the Samsung Galaxy A52s 5G (SM-A528B/N).
 
 ## Features
 
-Included:
-- Nuclear Knox removal (all Knox apps, libs, permissions and services)
-- Galaxy AI removed (SLens, Pet Detector, AICore, BixbyVision)
-- Aggressive debloat (~2GB+ less than stock): Facebook, Samsung Kids, AR Emoji, Samsung Pass and more
-- FOD optical fingerprint configured
-- WiFi 6E enabled
-- HW mDNIe disabled (display processing optimized)
-- Game Booster updated
-- Full UN1CA Settings (SecSettings) with all UN1CA features
+- One UI 8 based on Android 16
+- Debloated system with Knox and Galaxy AI removed
+- UN1CA Settings and updated Game Booster
+- Snapdragon 778G / SM7325 device configuration
+- Wi-Fi 6E, optical fingerprint and HFR support
+- Native full-screen Always On Display enabled
 
-Removed:
-- Knox apps and services (KnoxFrameBufferProvider, KnoxGuard, KnoxMposAgent, KnoxSandbox, libknox_*.so, libsdp_*.so, libdualdar.so)
-- Galaxy AI (SLens, Pet Detector, AICore, BixbyVision, Traceur)
-- Facebook services, Samsung Kids, AR Emoji, Samsung Pass
-- All Knox permissions and configurations
+## Build
 
-## Downloads
-
-Latest build: [GitHub Actions](https://github.com/vinisg61-coder/UN1CA/actions/workflows/build.yml) -> Artifacts -> `un1ca-a52sxq-rom.zip`
+Build the ROM through [GitHub Actions](https://github.com/vinisg61-coder/UN1CA/actions/workflows/build.yml) and download the generated artifact.
 
 ## Installation
 
-1. Boot to TWRP recovery
-2. Format Data (if coming from a different ROM)
-3. `adb shell twrp decrypt "default_password"` (no PIN/Pattern set)
-4. Flash `un1ca-*.zip`
-5. Wipe Dalvik/ART Cache
-6. Reboot
-
-## Info
-
-| | |
-|---|---|
-| Developer | vinisg61 |
-| Version | 1.0.0 |
-| Base | UN1CA 3.1.0 |
-| Android | 16 (One UI 8) |
-
-## Changelog
-
-### v1.0.0
-- Initial release
-- Nuclear Knox removal
-- Galaxy AI removed
-- Aggressive debloat
-- All UN1CA features preserved
+1. Boot to TWRP recovery.
+2. Format Data when coming from another ROM.
+3. Flash the generated `un1ca-*.zip` package.
+4. Wipe Dalvik/ART Cache and reboot.
 
 ## Credits
 
-- [Salvo Giangreco](https://github.com/salvogiangri) - UN1CA project
-- [ShaDisNX255](https://github.com/ShaDisNX255) - NcX ROM inspiration
-- [DavidArsene](https://github.com/DavidArsene), [paulowesll](https://github.com/paulowesll), [Simon1511](https://github.com/Simon1511), [ananjaser1211](https://github.com/ananjaser1211), [Fede2782](https://github.com/Fede2782), [iDrinkCoffee](https://github.com/iDrinkCoffee-TG), [RisenID](https://github.com/RisenID) - help and contributions
-- [LineageOS Team](https://www.lineageos.org/) - original [OTA updater implementation](https://github.com/LineageOS/android_packages_apps_Updater)
-- All UN1CA project forks, contributors, testers and users
+- [Salvo Giangreco](https://github.com/salvogiangreco) - UN1CA project
+- UN1CA contributors, forks, testers and users
 
 ## License
 
-Licensed under the [GNU General Public License v3.0](LICENSE). Based on [UN1CA](https://github.com/salvogiangri/UN1CA) by Salvo Giangreco.
-
-## Always-on Full-screen AOD
-
-The `a52sxq` target enables native **Full Screen AOD** capability via `SEC_FLOATING_FEATURE_LCD_CONFIG_AOD_FULLSCREEN=1`. The UN1CA global fallback was also corrected from `0` to `1`, preventing the target configuration from being overwritten during compilation. The option appears on the compatible system and remains editable under **Settings > Lock screen and AOD > Always On Display** after installation.
-
-The feature is applied directly via the standard GitHub Actions workflow and requires no root, Magisk/KernelSU modules, or manual post-installation configuration. The **Always** mode must be selected in the AOD settings if the firmware retains a previous preference; the build does not force user values ​​via a Smali patch, as the A52s firmware's `SettingsProvider` class does not match the context used by the experimental patch.
+Licensed under the [GNU General Public License v3.0](LICENSE).

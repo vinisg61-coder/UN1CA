@@ -62,4 +62,6 @@
     <string name="unica_updates_title">ArtisanROM Updates</string>
     <string name="unica_vulkan_summary">This is unstable and might cause issues!</string>
     <string name="unica_vulkan_title">Enable Vulkan renderer</string>
+    <string name="unica_rom_identity_title">ArtisanROM</string>
+    <string name="unica_rom_identity_summary">Custom firmware for Galaxy A52s 5G</string>
 </resources>

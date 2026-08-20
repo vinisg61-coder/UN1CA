@@ -1,0 +1,31 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingStart="20dp"
+    android:paddingEnd="20dp"
+    android:paddingTop="8dp"
+    android:paddingBottom="8dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/unica_rom_identity_background"
+        android:paddingStart="18dp"
+        android:paddingEnd="18dp"
+        android:paddingTop="7dp"
+        android:paddingBottom="7dp"
+        android:text="@string/unica_rom_identity_title"
+        android:textColor="@android:color/white"
+        android:textSize="15sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:text="@string/unica_rom_identity_summary"
+        android:textColor="@android:color/secondary_text_light"
+        android:textSize="12sp" />
+
+</LinearLayout>

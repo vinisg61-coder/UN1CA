@@ -1,0 +1,2 @@
+/one_ui_version/i
+    <com.android.settingslib.widget.LayoutPreference android:layout="@layout/unica_rom_identity_layout" android:selectable="false" android:key="unica_rom_identity" />

@@ -84,8 +84,8 @@ Latest build: [GitHub Actions](https://github.com/vinisg61-coder/UN1CA/actions/w
 
 Licensed under the [GNU General Public License v3.0](LICENSE). Based on [UN1CA](https://github.com/salvogiangri/UN1CA) by Salvo Giangreco.
 
-## AOD fullscreen sempre ativo
+## Always-on Full-screen AOD
 
-O alvo `a52sxq` habilita a capacidade nativa de **Full Screen AOD** por meio de `SEC_FLOATING_FEATURE_LCD_CONFIG_AOD_FULLSCREEN=1`. O fallback global da UN1CA também foi corrigido de `0` para `1`, evitando que a configuração do alvo seja sobrescrita durante a build. A opção aparece no sistema compatível e continua editável em **Configurações > Tela de bloqueio e AOD > Always On Display** após a instalação.
+The `a52sxq` target enables native **Full Screen AOD** capability via `SEC_FLOATING_FEATURE_LCD_CONFIG_AOD_FULLSCREEN=1`. The UN1CA global fallback was also corrected from `0` to `1`, preventing the target configuration from being overwritten during compilation. The option appears on the compatible system and remains editable under **Settings > Lock screen and AOD > Always On Display** after installation.
 
-A função é aplicada diretamente pelo workflow normal do GitHub Actions e não requer root, módulo Magisk/KernelSU ou configuração manual posterior. O modo **Always** precisa ser selecionado nas configurações do AOD caso o firmware preserve uma preferência anterior; a build não força valores por usuário via patch Smali, pois a classe SettingsProvider do firmware A52s não corresponde ao contexto usado pelo patch experimental.
+The feature is applied directly via the standard GitHub Actions workflow and requires no root, Magisk/KernelSU modules, or manual post-installation configuration. The **Always** mode must be selected in the AOD settings if the firmware retains a previous preference; the build does not force user values ​​via a Smali patch, as the A52s firmware's `SettingsProvider` class does not match the context used by the experimental patch.

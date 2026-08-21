@@ -76,11 +76,6 @@ while IFS= read -r f; do
     fi
 done < <(find "$MODPATH/SecSettings.apk" -type f)
 
-# Move Galaxy AI higher in the Settings homepage when the stock XML matches.
-# This is a cosmetic, best-effort patch and is skipped on incompatible firmware layouts.
-APPLY_PATCH "system" "system/priv-app/SecSettings/SecSettings.apk" \
-    "$MODPATH/smali/system/priv-app/SecSettings/SecSettings.apk/0002-Move-Galaxy-AI-to-top.patch" \
-    &> /dev/null || true
 
 # Add UN1CA Settings SearchIndexableData registrations
 LOG "- Patching \"smali/com/android/settingslib/search/SearchIndexableResourcesMobile.smali\" in /system/system/priv-app/SecSettings.apk"

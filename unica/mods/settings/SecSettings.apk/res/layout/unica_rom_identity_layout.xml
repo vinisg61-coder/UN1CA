@@ -2,7 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
     android:paddingStart="20dp"
     android:paddingEnd="20dp"
     android:paddingTop="8dp"
@@ -12,21 +13,20 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/unica_rom_identity_background"
+        android:fontFamily="sans-serif-medium"
         android:paddingStart="18dp"
         android:paddingEnd="18dp"
         android:paddingTop="7dp"
         android:paddingBottom="7dp"
         android:text="@string/unica_rom_identity_title"
         android:textColor="@android:color/white"
-        android:textSize="15sp"
-        android:textStyle="bold" />
+        android:textSize="14sp" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:text="@string/unica_rom_identity_summary"
-        android:textColor="@android:color/secondary_text_light"
-        android:textSize="12sp" />
+    <ImageView
+        android:layout_width="26dp"
+        android:layout_height="26dp"
+        android:layout_marginStart="8dp"
+        android:contentDescription="@string/unica_rom_identity_sparkle_content_description"
+        android:src="@drawable/unica_rom_identity_sparkle" />
 
 </LinearLayout>

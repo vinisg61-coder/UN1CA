@@ -64,4 +64,8 @@
     <string name="unica_vulkan_title">Enable Vulkan renderer</string>
     <string name="unica_rom_identity_title">ArtisanROM</string>
     <string name="unica_rom_identity_summary">Custom firmware for Galaxy A52s 5G</string>
+    <string name="unica_rom_identity_sparkle_content_description">ROM identity</string>
+    <string name="unica_about_card_title">About ArtisanROM</string>
+    <string name="unica_about_card_summary">One UI 8 • Android 16 • Galaxy A52s 5G</string>
+    <string name="unica_about_card_details">Built with UN1CA • Snapdragon 778G / SM7325</string>
 </resources>

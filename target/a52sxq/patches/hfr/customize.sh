@@ -1,9 +1,7 @@
 # https://android.googlesource.com/platform/frameworks/native/+/refs/tags/android-16.0.0_r2/services/surfaceflinger/Scheduler/RefreshRateSelector.h#314
-# Keep the peak/default refresh rate available during rapid gesture and app transitions.
-# These timers affect refresh-rate selection only; they do not force 120 Hz while idle.
-IDLE_TIMER_MS=500
-TOUCH_TIMER_MS=750
-DISPLAY_POWER_TIMER_MS=1000
+IDLE_TIMER_MS=250
+# https://android.googlesource.com/platform/frameworks/native/+/refs/tags/android-16.0.0_r2/services/surfaceflinger/sysprop/SurfaceFlingerProperties.sysprop#346
+TOUCH_TIMER_MS=300
 
 SET_PROP "vendor" "ro.surface_flinger.use_content_detection_for_refresh_rate" "true"
 LOG "- Adding \"ro.surface_flinger.set_idle_timer_ms\" prop with \"$IDLE_TIMER_MS\" in /vendor/default.prop"
@@ -13,9 +11,5 @@ EVAL "sed -i \"/set_idle_timer_ms/a ro.surface_flinger.set_touch_timer_ms=$TOUCH
 LOG "- Replacing \"ro.surface_flinger.enable_frame_rate_override\" prop with \"true\" in /vendor/default.prop"
 EVAL "sed -i \"/enable_frame_rate_override/d\" \"$WORK_DIR/vendor/default.prop\""
 EVAL "sed -i \"/persist.sys.usb.config/i ro.surface_flinger.enable_frame_rate_override=true\" \"$WORK_DIR/vendor/default.prop\""
-LOG "- Enabling SurfaceFlinger layer caching when supported"
-EVAL "sed -i \"/persist.sys.usb.config/i ro.surface_flinger.enable_layer_caching=true\" \"$WORK_DIR/vendor/default.prop\""
-LOG "- Keeping the default refresh rate during display wake transitions"
-EVAL "sed -i \"/persist.sys.usb.config/i ro.surface_flinger.set_display_power_timer_ms=$DISPLAY_POWER_TIMER_MS\" \"$WORK_DIR/vendor/default.prop\""
 
-unset IDLE_TIMER_MS TOUCH_TIMER_MS DISPLAY_POWER_TIMER_MS
+unset IDLE_TIMER_MS TOUCH_TIMER_MS

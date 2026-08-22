@@ -1,3 +1,0 @@
-name=A52s performance profile
-author=UN1CA
-description=Applies safe ART, dexopt, LMKD and render scheduling defaults for the Galaxy A52s.

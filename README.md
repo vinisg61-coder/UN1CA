@@ -10,15 +10,15 @@
 
 ---
 
-# UN1CA for Galaxy A52s 5G
+# Krypton ROM for Galaxy A52s 5G
 
-Custom firmware based on [UN1CA](https://github.com/salvogiangreco/UN1CA) for the Samsung Galaxy A52s 5G (SM-A528B/N).
+Custom firmware based on the upstream [UN1CA](https://github.com/salvogiangreco/UN1CA) for the Samsung Galaxy A52s 5G (SM-A528B/N).
 
 ## Features
 
 - One UI 8 based on Android 16
 - Debloated system with Knox and Galaxy AI removed
-- UN1CA Settings and updated Game Booster
+- Krypton ROM Settings and updated Game Booster
 - Snapdragon 778G / SM7325 device configuration
 - Wi-Fi 6E, optical fingerprint and HFR support
 - Native full-screen Always On Display enabled
@@ -31,7 +31,7 @@ Build the ROM through [GitHub Actions](https://github.com/vinisg61-coder/UN1CA/a
 
 1. Boot to TWRP recovery.
 2. Format Data when coming from another ROM.
-3. Flash the generated `un1ca-*.zip` package.
+3. Flash the generated `KryptonROM_*.zip` package.
 4. Wipe Dalvik/ART Cache and reboot.
 
 ## Credits

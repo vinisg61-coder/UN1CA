@@ -12,7 +12,7 @@ body:
         Make sure not to submit a duplicate bug report, search for existing bug reports [here](https://github.com/salvogiangri/UN1CA/discussions/categories/bug-reports).
   - type: input
     attributes:
-      label: "UN1CA version:"
+      label: "Krypton ROM version:"
       placeholder: 2.0.0-07d0046
     validations:
       required: true

@@ -6,7 +6,7 @@ VERSION_MAJOR=1
 VERSION_MINOR=0
 VERSION_PATCH=0
 # shellcheck disable=SC2034
-ROM_NAME="un1ca"
+ROM_NAME="krypton"
 
 # The below variables will be generated automatically
 #

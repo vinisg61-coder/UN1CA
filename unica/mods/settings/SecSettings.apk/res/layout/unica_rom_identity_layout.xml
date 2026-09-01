@@ -19,7 +19,7 @@
         android:paddingTop="7dp"
         android:paddingBottom="7dp"
         android:text="@string/unica_rom_identity_title"
-        android:textColor="@android:color/white"
+        android:textColor="#000000"
         android:textSize="14sp" />
 
     <ImageView

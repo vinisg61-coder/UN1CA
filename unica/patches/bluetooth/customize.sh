@@ -224,7 +224,11 @@ else
 fi
 
 # SEC_PRODUCT_FEATURE_BLUETOOTH_SUPPORT_XLNA_CONTROL
-if $SOURCE_BLUETOOTH_SUPPORT_XLNA_CONTROL; then
+if [[ "$SOURCE_FIRMWARE_PATH" == SM-S908E_* ]]; then
+    # The S22 Ultra Bluetooth APEX has a different ScanManager layout.
+    # Keep its native XLNA implementation instead of applying the S22 patch.
+    LOG "! Skipping XLNA Bluetooth patch for S22 Ultra source layout"
+elif $SOURCE_BLUETOOTH_SUPPORT_XLNA_CONTROL; then
     if ! $TARGET_BLUETOOTH_SUPPORT_XLNA_CONTROL; then
         DECODE_APK_IN_APEX "$TMP_DIR/unknown/apex_payload/app/Bluetooth@BP2A.250605.031.A3/Bluetooth.apk"
         LOG "- Applying \"Disable SUPPORT_XLNA_CONTROL support\" to apex_payload/app/Bluetooth@BP2A.250605.031.A3/Bluetooth.apk"

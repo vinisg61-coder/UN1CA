@@ -44,9 +44,19 @@ system/etc/init/dhkprov.rc
 system/lib64/vendor.samsung.hardware.security.hdcp.keyprovisioning@1.0.so
 "
 
-# GameDriver
+# GameDriver for a different Snapdragon platform
 SYSTEM_DEBLOAT+="
 system/priv-app/GameDriver-SM8550
+"
+
+# Optional Samsung services not required for telephony, camera, biometrics, NFC or AOD.
+# Keep this list limited to opt-in apps so core Samsung functionality remains intact.
+SYSTEM_DEBLOAT+="
+system/hidden/SmartTutor
+system/priv-app/GameHome
+system/priv-app/OneDrive_Samsung_v3
+system/priv-app/SamsungCarKeyFw
+system/priv-app/Upday
 "
 
 # Camera SDK

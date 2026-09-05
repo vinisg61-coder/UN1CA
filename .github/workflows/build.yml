@@ -11,11 +11,6 @@ jobs:
   build:
     runs-on: ubuntu-24.04
 
-    strategy:
-      fail-fast: false
-      matrix:
-        target: [a52q, a52sxq, a52xq, a71, a72q, a73xq, b0q, dm1q, dm2q, dm3q, g0q, m52xq, r0q, r8q, r9q, r9q2]
-
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
@@ -64,19 +59,19 @@ jobs:
           node-version: 'latest'
 
       - name: Build dependencies
-        run: source ./buildenv.sh ${{ matrix.target }}
+        run: source ./buildenv.sh a52sxq
 
       - name: Download stock firmwares
         run: |
-          source ./buildenv.sh ${{ matrix.target }}
+          source ./buildenv.sh a52sxq
           ./scripts/download_fw.sh
 
       - name: Extract stock firmwares
         run: |
-          source ./buildenv.sh ${{ matrix.target }}
+          source ./buildenv.sh a52sxq
           ./scripts/extract_fw.sh
 
       - name: Build ROM
         run: |
-          source ./buildenv.sh ${{ matrix.target }}
+          source ./buildenv.sh a52sxq
           ./scripts/make_rom.sh --no-rom-zip --no-rom-tar

@@ -9,39 +9,6 @@ jobs:
   update:
     runs-on: ubuntu-24.04
 
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - module: "Galaxy A52 (a52qnsxx)"
-            path: "prebuilts/samsung/a52qnsxx"
-          - module: "Galaxy A52s 5G (a52sxqxx)"
-            path: "prebuilts/samsung/a52sxqxx"
-          - module: "Galaxy A73 5G (a73xqxx)"
-            path: "prebuilts/samsung/a73xqxx"
-          - module: "Galaxy Z Fold5 (b5qxxx)"
-            path: "prebuilts/samsung/b5qxxx"
-          - module: "Galaxy S23 (dm1qkdiw)"
-            path: "prebuilts/samsung/dm1qkdiw"
-          - module: "Galaxy S23 Ultra (dm3qxxx)"
-            path: "prebuilts/samsung/dm3qxxx"
-          - module: "Galaxy S24 (e1qzcx)"
-            path: "prebuilts/samsung/e1qzcx"
-          - module: "Galaxy Tab S9 (gts9xxx)"
-            path: "prebuilts/samsung/gts9xxx"
-          - module: "Galaxy S22 (r0qxxx)"
-            path: "prebuilts/samsung/r0qxxx"
-          - module: "Galaxy S21 FE 5G (r9qxxx)"
-            path: "prebuilts/samsung/r9qxxx"
-          - module: "Galaxy S23 FE (r11sxxx)"
-            path: "prebuilts/samsung/r11sxxx"
-          - module: "(dm1q) China firmware blobs"
-            path: "target/dm1q/patches/china"
-          - module: "(dm2q) China firmware blobs"
-            path: "target/dm2q/patches/china"
-          - module: "(dm3q) China firmware blobs"
-            path: "target/dm3q/patches/china"
-
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
@@ -95,18 +62,18 @@ jobs:
       - name: Update prebuilt blobs
         run: |
           source ./buildenv.sh a52sxq
-          ./scripts/internal/update_prebuilt_blobs.sh ${{ matrix.path }}
-          echo "PDA_BUILD=$(cat ./${{ matrix.path }}/.current | cut -d "/" -f 1)" >> $GITHUB_ENV
+          ./scripts/internal/update_prebuilt_blobs.sh prebuilts/samsung/a52sxqxx
+          echo "PDA_BUILD=$(cat ./prebuilts/samsung/a52sxqxx/.current | cut -d "/" -f 1)" >> $GITHUB_ENV
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v7
         with:
           add-paths: |
-            ${{ matrix.path }}
-          commit-message: '${{ matrix.path }}: update blobs to ${{ env.PDA_BUILD }}'
+            prebuilts/samsung/a52sxqxx
+          commit-message: 'prebuilts/samsung/a52sxqxx: update blobs to ${{ env.PDA_BUILD }}'
           committer: 'github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>'
           author: 'github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>'
-          branch: '${{ matrix.path }}'
+          branch: 'prebuilts-samsung-a52sxqxx'
           delete-branch: true
-          title: 'Update ${{ matrix.path }} blobs to ${{ env.PDA_BUILD }}'
+          title: 'Update A52s blobs to ${{ env.PDA_BUILD }}'
           body: ''

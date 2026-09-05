@@ -59,6 +59,54 @@ system/priv-app/SamsungCarKeyFw
 system/priv-app/Upday
 "
 
+# Extreme A52s profile: remove additional user-facing Samsung, diagnostics,
+# factory, OTA, payment and language components. This intentionally removes
+# Samsung Pass/Wallet/OTA support; restore entries here if those features are
+# required. Radio, camera, biometric, NFC, Wi-Fi/Bluetooth and thermal blobs
+# are deliberately not included.
+SYSTEM_DEBLOAT+="
+system/app/DRParser
+system/app/FactoryAirCommandManager
+system/app/FactoryCameraFB
+system/app/FBAppManager_NS
+system/app/PlayAutoInstallConfig
+system/app/SamsungCalendar
+system/app/SamsungPassAutofill_v1
+system/app/SilentLog
+system/app/SmartReminder
+system/app/WebManual
+system/app/WlanTest
+system/etc/init/samsung_pass_authenticator_service.rc
+system/etc/permissions/privapp-permissions-com.samsung.android.app.kfa.xml
+system/etc/permissions/privapp-permissions-com.samsung.android.authfw.xml
+system/etc/permissions/privapp-permissions-com.samsung.android.cidmanager.xml
+system/etc/permissions/privapp-permissions-com.samsung.android.samsungpass.xml
+system/etc/permissions/privapp-permissions-com.samsung.android.spayfw.xml
+system/etc/permissions/privapp-permissions-com.sec.android.diagmonagent.xml
+system/etc/permissions/privapp-permissions-com.sec.android.soagent.xml
+system/etc/permissions/privapp-permissions-com.sec.bcservice.xml
+system/etc/permissions/privapp-permissions-com.sem.factoryapp.xml
+system/etc/permissions/privapp-permissions-com.wssyncmldm.xml
+system/etc/sysconfig/meta-hiddenapi-package-allowlist.xml
+system/etc/sysconfig/samsungauthframework.xml
+system/etc/sysconfig/samsungpassapp.xml
+system/priv-app/AuthFramework
+system/priv-app/BCService
+system/priv-app/CIDManager
+system/priv-app/DiagMonAgent91
+system/priv-app/FBInstaller_NS
+system/priv-app/FBServices
+system/priv-app/FacAtFunction
+system/priv-app/FactoryTestProvider
+system/priv-app/FotaAgent
+system/priv-app/ModemServiceMode
+system/priv-app/PaymentFramework
+system/priv-app/SEMFactoryApp
+system/priv-app/SOAgent7
+system/priv-app/SamsungPass
+system/priv-app/SmartEpdgTestApp
+"
+
 # Camera SDK
 SYSTEM_DEBLOAT+="
 system/etc/default-permissions/default-permissions-com.samsung.android.globalpostprocmgr.xml
